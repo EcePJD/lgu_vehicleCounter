@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Counts</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Consolidated Vehicle Counts</h1>
+    <div id="totals">
+        <div v-for="(total, type) in totalCounts" :key="type">
+            <h3>{{ type }}: {{ total }}</h3>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
