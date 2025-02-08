@@ -47,7 +47,7 @@ const counterApp = Vue.createApp({
     }
 }).mount("#app");
 
-const totalsApp = vue.createApp({
+const totalsApp = Vue.createApp({
     data() {
         return {
             totalsCounts: {}
