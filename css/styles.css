@@ -41,9 +41,7 @@ h1 {
 }
 
 .container-item {
-    width: 32%;
     height: 300px;
-    max-height: 200px;
     flex-wrap: nowrap;
     padding: 5px;
     background-color: #999999;
@@ -77,6 +75,9 @@ h1 {
 
 .container-counter > div {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container-counter > .itemLabel {
@@ -85,10 +86,13 @@ h1 {
 }
 
 .container-counter > .itemLabel > h2 {
-    font-size: 100%;
+    font-size: 20px;
     text-align: center;
     color: #fff2cc;
     font-weight: 800;
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .container-counter > .itemCount {
@@ -177,4 +181,22 @@ h1 {
 .container-allData > div > div > span {
     padding: 10px;
     text-align: right;
+}
+
+@media only screen and (max-width: 9999px) {
+    .container-item {
+        width: 32%;
+    }
+}
+
+@media only screen and (max-width: 749px) {
+    .container-item {
+        width: 48%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .container-item {
+        width: 94%;
+    }
 }
