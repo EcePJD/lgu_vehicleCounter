@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Counter</title>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module" src="../js/components/firebase.js"></script>
+    <script type="module" src="../js/main.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <h1>Vehicle Counter</h1>
-    <nav>
-        <a href="./html/counters.html">Go to Counters</a>
-        <a href="./html/totals.html">View Totals</a>
-    </nav>
+    <div id="app">
+        <div v-if="(main.tabletID>0 || main.tabletID<5) && (main.sessionID>0 || main.sessionID<5)" class="container flexV container-tablet">
+            <h1>Camaligan Vehicle Counter Team {{main.tabletID}} - Session {{main.sessionID}}</h1>
+            
+            <div class="container flexV container-vehicle">
+                <div v-for="(vehicle, index) in main.data.vehicle" :key="index" class="container flexV container-item">
+                    <h2 class="itemTitle itemTitle-upper">{{vehicle.label}}</h2>
+                    <div class="container container-flexV">
+                        <button @click="decrease(index)" class="btn btn-decrease">-</button>
+                        <span>{{vehicle.count}}</span>
+                        <button @click="increase(index)" class="btn btn-increase">+</button>
+                    </div>
+                    <h2 class="itemTitle itemTitle-lower">{{vehicle.label}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="container-monitor">
+        </div>
+    </div>
 </body>
 </html>
