@@ -11,24 +11,42 @@
 </head>
 <body>
     <div id="app">
-        <div v-if="main.tabletID>0 && main.tabletID<5 && main.sessionID>0 && main.sessionID<5" class="container flexV container-tablet">
-            <h1>Camaligan Vehicle Counter Team {{main.tabletID}} - Session {{main.sessionID}}</h1>
+        <div v-if="main.data.tabletID>0 && main.data.tabletID<5 && main.data.sessionID>0 && main.data.sessionID<5" class="container flexV container-tablet">
+            <h1>Camaligan Vehicle Counter Team {{main.data.tabletID}} - Session {{main.data.sessionID}}</h1>
             
-            <div class="container flexV container-vehicle">
-                <div v-for="(vehicle, index) in main.data.vehicle" :key="index" class="container flexV container-item">
-                    <h2 class="itemTitle itemTitle-upper">{{vehicle.label}}</h2>
-                    <div class="container container-flexV">
-                        <button @click="decrease(index)" class="btn btn-decrease">-</button>
-                        <span>{{vehicle.count}}</span>
-                        <button @click="increase(index)" class="btn btn-increase">+</button>
+            <div class="container flexH container-vehicle">
+                <div v-for="(vehicle, index) in main.data.vehicle" :key="index" class="container flexH container-item">
+                    <button @click="decrease(index)" class="btn btn-decrease">-</button>
+
+                    <div class="container flexV container-counter">
+                        <div class="itemLabel"><h2 class="itemTitle itemTitle-upper">{{vehicle.label}}</h2></div>
+                        <div class="itemCount"><span>{{vehicle.formattedText}}</span></div>
+                        <div class="itemLabel"><h2 class="itemTitle itemTitle-lower">{{vehicle.label}}</h2></div>
                     </div>
-                    <h2 class="itemTitle itemTitle-lower">{{vehicle.label}}</h2>
+
+                    <button @click="increase(index)" class="btn btn-increase">+</button>
                 </div>
             </div>
         </div>
 
-        <div v-else class="container-monitor">
+        <div v-else class="container flexV container-monitor">
+            <div class="container flexH container-allData">
+                <div class="container flexV container-column1">
+                    <div><span>TEAM</span></div>
+                    <div><span>SESSION</span></div>
+                    <div v-for="(vehicle, index) in all[0].vehicle">
+                        <span>{{vehicle.label}}</span>
+                    </div>
+                </div>
 
+                <div v-for="(data, index) in all" :key="index" class="container flexV container-allData" :class="'column' + (index + 2)">
+                    <div class="tabletID"><span>{{data.tabletID}}</span></div>
+                    <div class="tabletID"><span>{{data.sessionID}}</span></div>
+                    <div v-for="(vehicle, index) in data.vehicle">
+                        <span>{{vehicle.count}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

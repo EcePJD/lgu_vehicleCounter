@@ -1,17 +1,180 @@
 body {
-    font-family: Arial, sans-serif;
+    background-color: #d3d3d3;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+h1 {
+    height: 20%;
+}
+
+.flexV {
+    flex-direction: column;
+}
+
+.flexH {
+    flex-direction: row;
+}
+
+.container-tablet {
+    width: 100%;
+    height: 100%;
+}
+
+.container-vehicle {
+    background-color: #ffffff;
+    align-items: stretch;
+    height: 100%;
+}
+
+.container-item {
+    width: 32%;
+    height: 300px;
+    max-height: 200px;
+    flex-wrap: nowrap;
+    padding: 5px;
+    background-color: #999999;
+}
+
+.container-item > button {
+    width: 20%;
+    height: 20vh;
+    max-height: 40px;
+    max-width: 40px;
+    margin: 2%;
+    font-weight: 800;
+    font-size: 100%;
+}
+
+.btn-decrease {
+    background-color: #e06666;
+    color: #3b1b1b;
+}
+
+.btn-increase {
+    background-color: #93c47d;
+    color: #1b3b1f;
+}
+
+.container-counter {
+    width: 55%;
+    height: 100%;
+    background-color: #434343;
+}
+
+.container-counter > div {
+    width: 100%;
+}
+
+.container-counter > .itemLabel {
+    height: 30%;
+    width: 90%;
+}
+
+.container-counter > .itemLabel > h2 {
+    font-size: 100%;
+    text-align: center;
+    color: #fff2cc;
+    font-weight: 800;
+}
+
+.container-counter > .itemCount {
+    width: 80%;
+    height: 40%;
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+}
+
+.container-counter > .itemCount > span {
+    width: 100%;
+    font-size: 40px;
+    letter-spacing: 5px;
+    color: #ffffff;
     text-align: center;
 }
 
-.counter, .vehicle-counter {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    display: inline-block;
+.container-monitor {
+    width: 100%;
+    height: 100%;
 }
 
-button {
-    margin: 5px;
+.container-monitor > div {
+    width: 100%;
+    height: 100%;
+}
+
+.container-allData > div > div {
+    border: 1px solid #000000;
+    width: 60px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container-allData > .container-column1 > div {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.container-allData > div:nth-child(odd) > div:nth-child(1) {
+    background-color: #1953be;
+    color: #ffffff;
+}
+
+.container-allData > div:nth-child(even) > div:nth-child(1) {
+    background-color: #163877;
+    color: #ffffff;
+}
+
+.container-allData > div:nth-child(1) > div:nth-child(1) {
+    background-color: #071436;
+    color: #ffffff;
+}
+
+.container-allData > div:nth-child(odd) > div:nth-child(2) {
+    background-color: #3f72d1;
+    color: #ffffff;
+}
+
+.container-allData > div:nth-child(even) > div:nth-child(2) {
+    background-color: #3c57a3;
+    color: #ffffff;
+}
+
+.container-allData > div:nth-child(1) > div:nth-child(2) {
+    background-color: #1a2749;
+    color: #ffffff;
+}
+
+.container-allData > .container-column1 > div:nth-child(odd) {
+    background-color: #4362b8;
+    color: #ffffff;
+}
+
+.container-allData > .container-column1 > div:nth-child(even) {
+    background-color: #2d4381;
+    color: #ffffff;
+}
+
+.container-allData > .container-column1 > div > span {
+    font-weight: 800;
+}
+
+.container-allData > div > div > span {
     padding: 10px;
-    font-size: 16px;
+    text-align: right;
 }

@@ -12,50 +12,71 @@ const counter = Vue.createApp({
     data() {
         return {
             main: {
-                tabletID: 0,
-                sessionID: 0,
                 data: {
                     vehicle: [
-                        { label: 'Trucks and Heavy Equipments', count: 0 },
-                        { label: 'Public Utility Vehicles (PUV / Jeepney)', count: 0 },
-                        { label: 'Sports Utility Vehicle (SUV)', count: 0 },
-                        { label: 'SEDAN', count: 0 },
-                        { label: 'Tricycle', count: 0 },
-                        { label: 'Trike / Padyak', count: 0 },
-                        { label: 'Electronic Vehicles', count: 0 },
-                        { label: 'Other Vehicles', count: 0 },
+                        { label: 'Trucks and Heavy Equipments', count: 0, formattedText: '0000' },
+                        { label: 'Public Utility Vehicles (PUV / Jeepney)', count: 0, formattedText: '0000' },
+                        { label: 'Sports Utility Vehicle (SUV)', count: 0, formattedText: '0000' },
+                        { label: 'SEDAN', count: 0, formattedText: '0000' },
+                        { label: 'Tricycle', count: 0, formattedText: '0000' },
+                        { label: 'Trike / Padyak', count: 0, formattedText: '0000' },
+                        { label: 'Electronic Vehicles', count: 0, formattedText: '0000' },
+                        { label: 'Other Vehicles', count: 0, formattedText: '0000' },
                     ],
                     timeStampIn: '',
                     timeStampOut: '',
                     lat: 0,
                     long: 0,
+                    tabletID: 0,
+                    sessionID: 0,
                 }
-            }
+            },
+            all: [],
+            intervalID: null
         };
     },
     async created() {
         // Get tablet id from URL
-        this.main.tabletID = parseInt(document.URL.slice(document.URL.indexOf("id=") + 3, document.URL.indexOf("id=") + 4));
-        this.main.tabletID = (isNaN(this.main.tabletID) || this.main.tabletID > 4) ? 0 : this.main.tabletID;
+        this.main.data.tabletID = parseInt(document.URL.slice(document.URL.indexOf("id=") + 3, document.URL.indexOf("id=") + 4));
+        this.main.data.tabletID = (isNaN(this.main.data.tabletID) || this.main.data.tabletID > 4) ? 0 : this.main.data.tabletID;
         // Get session id from URL
-        this.main.sessionID = parseInt(document.URL.slice(document.URL.indexOf("ss=") + 3, document.URL.indexOf("ss=") + 4));
-        this.main.sessionID = (isNaN(this.main.sessionID) || this.main.sessionID > 4 ) ? 0 : this.main.sessionID;
+        this.main.data.sessionID = parseInt(document.URL.slice(document.URL.indexOf("ss=") + 3, document.URL.indexOf("ss=") + 4));
+        this.main.data.sessionID = (isNaN(this.main.data.sessionID) || this.main.data.sessionID > 4 ) ? 0 : this.main.data.sessionID;
         // Load saved data from Firebase
-        if(this.main.tabletID > 0 && this.main.sessionID > 0) {
+        if(this.main.data.tabletID > 0 && this.main.data.tabletID < 5 && this.main.data.sessionID > 0 && this.main.data.sessionID < 5) {
             // Get data for current tablet and session id
-            if(this.loadTabletData(this.main.tabletID, this.main.sessionID)) {
+            if(this.loadTabletData(this.main.data.tabletID, this.main.data.sessionID)) {
                 console.log("Successfully Loaded Tablet Data");
             } else {
                 console.log("Failed to Load Tablet Data");
             }
         } else {
-            // Get all data
+            if(this.loadAllData()) {
+                console.log("Successfully loaded all the data");
+            } else {
+                console.log("Failed to load all the data");
+            }
         }
     },
+    async mounted() {
+        if(this.main.data.tabletID == 0 || this.main.data.tabletID > 4 || this.main.data.sessionID == 0 || this.main.data.sessionID > 4) {
+            this.intervalID = setInterval(() => {
+                if(this.loadAllData()) {
+                    console.log("Successfully loaded all the data");
+                } else {
+                    console.log("Failed to load all the data");
+                }
+            }, 5000);
+        }
+    },
+    async beforeUnmount() {
+        clearInterval(this.intervalID);
+    },
     methods: {
-        increase(i, id = this.main.tabletID, ss = this.main.sessionID) {
+        increase(i, id = this.main.data.tabletID, ss = this.main.data.sessionID) {
             if(this.main.data.vehicle[i].count < 9999) {
                 this.main.data.vehicle[i].count++;
+                this.main.data.vehicle[i].formattedText = this.formatCounter(this.main.data.vehicle[i].count);
                 if(this.saveTabletData(id, ss)) {
                     console.log("Successfully Saved Tablet Data");
                 } else {
@@ -63,9 +84,10 @@ const counter = Vue.createApp({
                 }
             }
         },
-        decrease(i, id = this.main.tabletID, ss = this.main.sessionID) {
+        decrease(i, id = this.main.data.tabletID, ss = this.main.data.sessionID) {
             if(this.main.data.vehicle[i].count > 0) {
                 this.main.data.vehicle[i].count--;
+                this.main.data.vehicle[i].formattedText = this.formatCounter(this.main.data.vehicle[i].count);
                 if(this.saveTabletData(id, ss)) {
                     console.log("Successfully Saved");
                 } else {
@@ -73,22 +95,8 @@ const counter = Vue.createApp({
                 }
             }
         },
-        async loadTabletData(id, ss) {
-            // Get the current tablet and session data from Google Firebase DB
-            if(id > 0 && id < 5
-                && ss > 0 && ss < 5) {
-                const currentData = await getDoc(
-                    doc( db,
-                         "vehicleCounter",
-                         `id-${id}-ss-${ss}`
-                    )
-                );
-                if(currentData.exists()) {
-                    this.main.data = currentData.data();
-                }
-                return true;
-            }
-            return false;
+        formatCounter(count) {
+            return String(count).padStart(4, '0');
         },
         async saveTabletData(id, ss) {
             // Save the current tablet and session data to Google Firebase DB
@@ -104,68 +112,34 @@ const counter = Vue.createApp({
             }
             return false;
         },
-    }
-}).mount("#app");
-
-/*const counterApp = Vue.createApp({
-    data() {
-        return {
-            counters: [
-                { truck: 0, puv: 0, suv: 0, sedan: 0, tricycle: 0, padyak: 0, eVehicle: 0, other: 0 },
-                { truck: 0, puv: 0, suv: 0, sedan: 0, tricycle: 0, padyak: 0, eVehicle: 0, other: 0 },
-                { truck: 0, puv: 0, suv: 0, sedan: 0, tricycle: 0, padyak: 0, eVehicle: 0, other: 0 },
-                { truck: 0, puv: 0, suv: 0, sedan: 0, tricycle: 0, padyak: 0, eVehicle: 0, other: 0 }
-            ]
-        };
-    },
-    async created() {
-        // Load saved data from Firebase
-        const querySnapshot = await getDocs(collection(db, "counters"));
-        querySnapshot.forEach(doc => {
-            this.counters = doc.data().counters;
-        });
-    },
-    methods: {
-        increase(index, type) {
-            if(this.counters[index][type] < 9999) {
-                this.counters[index][type]++;
-                this.saveData();
+        async loadTabletData(id, ss) {
+            // Get the current tablet and session data from Google Firebase DB
+            if(id > 0 && id < 5
+                && ss > 0 && ss < 5) {
+                const currentData = await getDoc(
+                    doc( db,
+                         "vehicleCounter",
+                         `id-${id}-ss-${ss}`
+                    )
+                );
+                if(currentData.exists()) {
+                    this.main.data = currentData.data();
+                    return true;
+                }
             }
+            return false;
         },
-        decrease(index, type) {
-            if(this.counters[index][type] > 0) {
-                this.counters[index][type]--;
-                this.saveData();
-            }
-        },
-        async saveData() {
-            await setDoc(doc(db, "counters", "vehicleData"), {
-                counters: this.counters
+        async loadAllData() {
+            const allData = await getDocs(collection(db, "vehicleCounter"));
+            let importedData = [];
+            allData.forEach((doc) => {
+                importedData.push(doc.data());
             });
+            if(importedData.length > 0) {
+                this.all = importedData;
+                return true;
+            }
+            return false;
         }
     }
 }).mount("#app");
-
-const totalsApp = Vue.createApp({
-    data() {
-        return {
-            totalsCounts: {}
-        };
-    },
-    async created() {
-        const querySnapshot = await getDocs(collection(db, "counters"));
-        let totals = {};
-
-        querySnapshot.forEach(doc => {
-            let counters = doc.data().counters;
-            counters.forEach(counter => {
-                Object.keys(counter).forEach(type => {
-                    totals[type] = (totals[type] || 0) + counter[type];
-                });
-            });
-        });
-
-        this.totalCounts = totals;
-        //console.log(this.totalCounts);
-    }
-}).mount("#totals");*/
