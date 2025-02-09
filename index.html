@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="app">
-        <div v-if="(main.tabletID>0 || main.tabletID<5) && (main.sessionID>0 || main.sessionID<5)" class="container flexV container-tablet">
+        <div v-if="main.tabletID>0 && main.tabletID<5 && main.sessionID>0 && main.sessionID<5" class="container flexV container-tablet">
             <h1>Camaligan Vehicle Counter Team {{main.tabletID}} - Session {{main.sessionID}}</h1>
             
             <div class="container flexV container-vehicle">
