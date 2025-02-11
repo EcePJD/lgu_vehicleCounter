@@ -43,7 +43,7 @@ const counter = Vue.createApp({
         this.main.data.sessionID = parseInt(document.URL.slice(document.URL.indexOf("ss=") + 3, document.URL.indexOf("ss=") + 4));
         this.main.data.sessionID = (isNaN(this.main.data.sessionID) || this.main.data.sessionID > 4 ) ? 0 : this.main.data.sessionID;
         // Load saved data from Firebase
-        if(this.main.data.tabletID > 0 && this.main.data.tabletID < 5 && this.main.data.sessionID > 0 && this.main.data.sessionID < 5) {
+        if(this.main.data.tabletID > 0 && this.main.data.tabletID < 5 && this.main.data.sessionID > 0 && this.main.data.sessionID < 7) {
             // Get data for current tablet and session id
             if(this.loadTabletData(this.main.data.tabletID, this.main.data.sessionID)) {
                 console.log("Successfully Loaded Tablet Data");
@@ -59,7 +59,7 @@ const counter = Vue.createApp({
         }
     },
     async mounted() {
-        if(this.main.data.tabletID == 0 || this.main.data.tabletID > 4 || this.main.data.sessionID == 0 || this.main.data.sessionID > 4) {
+        if(this.main.data.tabletID == 0 || this.main.data.tabletID > 4 || this.main.data.sessionID == 0 || this.main.data.sessionID > 6) {
             this.intervalID = setInterval(() => {
                 if(this.loadAllData()) {
                     console.log("Successfully loaded all the data");
@@ -101,7 +101,7 @@ const counter = Vue.createApp({
         async saveTabletData(id, ss) {
             // Save the current tablet and session data to Google Firebase DB
             if(id > 0 && id < 5
-                && ss > 0 && ss < 5) {
+                && ss > 0 && ss < 7) {
                 await setDoc(
                     doc( db,
                          "vehicleCounter",
@@ -115,7 +115,7 @@ const counter = Vue.createApp({
         async loadTabletData(id, ss) {
             // Get the current tablet and session data from Google Firebase DB
             if(id > 0 && id < 5
-                && ss > 0 && ss < 5) {
+                && ss > 0 && ss < 7) {
                 const currentData = await getDoc(
                     doc( db,
                          "vehicleCounter",
