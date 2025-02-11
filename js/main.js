@@ -38,12 +38,12 @@ const counter = Vue.createApp({
     async created() {
         // Get tablet id from URL
         this.main.data.tabletID = parseInt(document.URL.slice(document.URL.indexOf("id=") + 3, document.URL.indexOf("id=") + 4));
-        this.main.data.tabletID = (isNaN(this.main.data.tabletID) || this.main.data.tabletID > 4) ? 0 : this.main.data.tabletID;
+        this.main.data.tabletID = (isNaN(this.main.data.tabletID) || this.main.data.tabletID > 9) ? 0 : this.main.data.tabletID;
         // Get session id from URL
         this.main.data.sessionID = parseInt(document.URL.slice(document.URL.indexOf("ss=") + 3, document.URL.indexOf("ss=") + 4));
-        this.main.data.sessionID = (isNaN(this.main.data.sessionID) || this.main.data.sessionID > 4 ) ? 0 : this.main.data.sessionID;
+        this.main.data.sessionID = (isNaN(this.main.data.sessionID) || this.main.data.sessionID > 9) ? 0 : this.main.data.sessionID;
         // Load saved data from Firebase
-        if(this.main.data.tabletID > 0 && this.main.data.tabletID < 5 && this.main.data.sessionID > 0 && this.main.data.sessionID < 7) {
+        if(this.main.data.tabletID > 0 && this.main.data.tabletID < 10 && this.main.data.sessionID > 0 && this.main.data.sessionID < 10) {
             // Get data for current tablet and session id
             if(this.loadTabletData(this.main.data.tabletID, this.main.data.sessionID)) {
                 console.log("Successfully Loaded Tablet Data");
@@ -59,7 +59,7 @@ const counter = Vue.createApp({
         }
     },
     async mounted() {
-        if(this.main.data.tabletID == 0 || this.main.data.tabletID > 4 || this.main.data.sessionID == 0 || this.main.data.sessionID > 6) {
+        if(this.main.data.tabletID == 0 || this.main.data.tabletID > 9 || this.main.data.sessionID == 0 || this.main.data.sessionID > 9) {
             this.intervalID = setInterval(() => {
                 if(this.loadAllData()) {
                     console.log("Successfully loaded all the data");
@@ -100,8 +100,8 @@ const counter = Vue.createApp({
         },
         async saveTabletData(id, ss) {
             // Save the current tablet and session data to Google Firebase DB
-            if(id > 0 && id < 5
-                && ss > 0 && ss < 7) {
+            if(id > 0 && id < 10
+                && ss > 0 && ss < 10) {
                 await setDoc(
                     doc( db,
                          "vehicleCounter",
@@ -114,8 +114,8 @@ const counter = Vue.createApp({
         },
         async loadTabletData(id, ss) {
             // Get the current tablet and session data from Google Firebase DB
-            if(id > 0 && id < 5
-                && ss > 0 && ss < 7) {
+            if(id > 0 && id < 10
+                && ss > 0 && ss < 10) {
                 const currentData = await getDoc(
                     doc( db,
                          "vehicleCounter",
