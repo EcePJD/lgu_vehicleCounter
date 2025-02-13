@@ -1,13 +1,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, getDoc, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { firebaseConfig } from "./components/firebase.js";
+// import { getFirestore, collection, getDoc, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+// import { firebaseConfig } from "./components/firebase.js";
+<script src="https://unpkg.com/vue-router@4"></script>
 
+import { createApp } from "vue";
+import router from "./router.js";
 
 // Initialize Google Firebase Database 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
 
 // Initialize the Vue JS Application
+
+import Login from "./components/login";
+
+const app = createApp({});
+app.use(router);
+app.mount("#app");
+
+
 const counter = Vue.createApp({
     data() {
         return {
@@ -22,6 +33,7 @@ const counter = Vue.createApp({
                         { label: 'Trike / Padyak', count: 0, formattedText: '0000' },
                         { label: 'Electronic Vehicles', count: 0, formattedText: '0000' },
                         { label: 'Other Vehicles', count: 0, formattedText: '0000' },
+                        { label: 'BISEKLETA', count: 0, formattedText: '0000' },
                     ],
                     timeStampIn: '',
                     timeStampOut: '',
@@ -102,12 +114,12 @@ const counter = Vue.createApp({
             // Save the current tablet and session data to Google Firebase DB
             if(id > 0 && id < 10
                 && ss > 0 && ss < 10) {
-                await setDoc(
-                    doc( db,
-                         "vehicleCounter",
-                         `id-${id}-ss-${ss}`
-                    ), this.main.data 
-                );
+                // await setDoc(
+                //     doc( db,
+                //          "vehicleCounter",
+                //          `id-${id}-ss-${ss}`
+                //     ), this.main.data 
+                // );
                 return true;
             }
             return false;
@@ -116,12 +128,12 @@ const counter = Vue.createApp({
             // Get the current tablet and session data from Google Firebase DB
             if(id > 0 && id < 10
                 && ss > 0 && ss < 10) {
-                const currentData = await getDoc(
-                    doc( db,
-                         "vehicleCounter",
-                         `id-${id}-ss-${ss}`
-                    )
-                );
+                // const currentData = await getDoc(
+                //     doc( db,
+                //          "vehicleCounter",
+                //          `id-${id}-ss-${ss}`
+                //     )
+                // );
                 if(currentData.exists()) {
                     this.main.data = currentData.data();
                     return true;
@@ -130,15 +142,15 @@ const counter = Vue.createApp({
             return false;
         },
         async loadAllData() {
-            const allData = await getDocs(collection(db, "vehicleCounter"));
+            // const allData = await getDocs(collection(db, "vehicleCounter"));
             let importedData = [];
-            allData.forEach((doc) => {
-                importedData.push(doc.data());
-            });
-            if(importedData.length > 0) {
-                this.all = importedData;
-                return true;
-            }
+            // allData.forEach((doc) => {
+            //     importedData.push(doc.data());
+            // });
+            // if(importedData.length > 0) {
+            //     this.all = importedData;
+            //     return true;
+            // }
             return false;
         }
     }
