@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 // import { getFirestore, collection, getDoc, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 // import { firebaseConfig } from "./components/firebase.js";
-<script src="https://unpkg.com/vue-router@4"></script>
 
 import { createApp } from "vue";
 import router from "./router.js";
@@ -15,10 +14,11 @@ import router from "./router.js";
 
 import Login from "./components/login";
 
-const app = createApp({});
-app.use(router);
-app.mount("#app");
 
+
+  const app = createApp({});
+  app.use(router);
+  app.mount("#app");
 
 const counter = Vue.createApp({
     data() {
