@@ -11,6 +11,7 @@ import router from "./router.js";
 // const db = getFirestore(app);
 
 // Initialize the Vue JS Application
+//test comment
 
 import Login from "./components/login";
 
